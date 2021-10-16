@@ -189,7 +189,7 @@ extension LoginViewController: LoginButtonDelegate {
         
         let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me", parameters: ["fields": "email,name"], tokenString: token, version: nil, httpMethod: .get)
         
-        facebookRequest.start(completionHandler: { _, result, error in
+        facebookRequest.start(completion: { _, result, error in
             guard let result = result as? [String: Any], error == nil else {
                 print("Failed to make facebook graph request")
                 return
