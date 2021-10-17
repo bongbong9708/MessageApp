@@ -13,6 +13,9 @@ pod 'Firebase/Database'
 # Facebook
 pod 'FBSDKLoginKit'
 
+# Google Sign In
+pod 'GoogleSignIn'
+
   # Pods for Messenger
 
 end
