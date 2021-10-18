@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
 import FBSDKLoginKit
 import GoogleSignIn
@@ -80,9 +81,20 @@ class LoginViewController: UIViewController {
     
     private let googleLogInButton = GIDSignInButton()
     
+    private var loginObserver: NSObjectProtocol?
+     
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        loginObserver = NotificationCenter.default.addObserver(forName: .didLogInNotification, object: nil, queue: .main, using: { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        })
+        
+        GIDSignIn.sharedInstance()?.presentingViewController = self
         
         title = "Log In"
         view.backgroundColor = .white
@@ -105,6 +117,12 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(facebookLoginButton)
         scrollView.addSubview(googleLogInButton)
         
+    }
+    
+    deinit{
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -239,12 +257,9 @@ extension LoginViewController: LoginButtonDelegate {
                 if !exists {
                     DatabaseManager.shared.insertUser(with: ChatAppUser(firstName: firstName, lastName: lastName, emailAddress: email))
                 }
-
             })
            
         }
-        
-        
         
     }
     

@@ -51,11 +51,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             guard let strongSelf = self else {
                 return
             }
-            // Log out facebok
+            // Log out facebook
             FBSDKLoginKit.LoginManager().logOut()
             
             // Google Log out
-            GIDSignIn.sharedInstance.signOut()
+            GIDSignIn.sharedInstance()?.signOut()
             
             do {
                 try FirebaseAuth.Auth.auth().signOut()
